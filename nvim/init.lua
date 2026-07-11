@@ -31,13 +31,30 @@ require("catppuccin").setup({
 vim.cmd.colorscheme("catppuccin")
 
 
--- File searching
+-- Telescope file searching
 require("telescope").setup({})
 local builtin = require("telescope.builtin")
 vim.keymap.set("n", "<leader>ff", builtin.find_files)
 vim.keymap.set("n", "<leader>fg", builtin.live_grep)
 vim.keymap.set("n", "<leader>fb", builtin.buffers)
 vim.keymap.set("n", "<leader>fh", builtin.help_tags)
+
+
+-- Yazi file manager
+require("yazi").setup({
+  open_for_directories = false,
+  keymaps = {
+    show_help = "<f1>",
+  },
+})
+
+vim.keymap.set({ "n", "v" }, "<leader>y", function()
+  require("yazi").yazi()
+end)
+
+vim.keymap.set("n", "<leader>Y", function()
+  require("yazi").yazi({ cwd = vim.fn.getcwd() })
+end)
 
 
 -- Within-file navigation
@@ -134,7 +151,7 @@ vim.keymap.set({ "x", "o" }, "ii", function()
 end)
 
 
--- Language server
+-- Jedi language server
 vim.opt.completeopt = { "menuone", "noinsert", "noselect" }
 
 vim.lsp.config("jedi", {
