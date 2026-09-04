@@ -1,0 +1,8 @@
+# Managed by ~/.dotfiles - do not edit between the marker comments.
+
+# zoxide provides the `z` command; the binary alone does nothing without this.
+eval "$(zoxide init zsh)"
+
+# pipx/uv install here (jedi-language-server, uv, claude).
+# nvim invokes the LSP as a bare `jedi-language-server`, so this must be on PATH.
+export PATH="$HOME/.local/bin:$PATH"

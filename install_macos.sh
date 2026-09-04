@@ -59,7 +59,24 @@ if [ -e ~/.tmux.conf ] && [ ! -L ~/.tmux.conf ]; then
   mv ~/.tmux.conf ~/.tmux.conf.bak
 fi
 
+if [ -e ~/.config/yazi ] && [ ! -L ~/.config/yazi ]; then
+  mv ~/.config/yazi ~/.config/yazi.bak
+fi
+
 ln -sfn ~/.dotfiles/nvim ~/.config/nvim
 ln -sfn ~/.dotfiles/tmux/.tmux.conf ~/.tmux.conf
+ln -sfn ~/.dotfiles/yazi ~/.config/yazi
+
+# Append the managed zsh block to ~/.zshrc. oh-my-zsh owns that file, so we
+# append behind a marker rather than symlinking it. Guarded to stay idempotent.
+zshrc_marker="# >>> dotfiles managed >>>"
+if ! grep -qF "$zshrc_marker" ~/.zshrc 2>/dev/null; then
+  {
+    echo ""
+    echo "$zshrc_marker"
+    cat ~/.dotfiles/zsh/zshrc.snippet
+    echo "# <<< dotfiles managed <<<"
+  } >> ~/.zshrc
+fi
 
 nvim --headless '+TSUpdateSync' +qa
